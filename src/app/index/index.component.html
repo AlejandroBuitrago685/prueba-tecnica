@@ -1,0 +1,65 @@
+<div *ngIf="showEmptyResults" class="alert">
+    <p>No se han encontrado resultados para los filtros seleccionados</p>
+</div>
+<div class="container">
+    <form [formGroup]="filterForm">
+        <div class="form">
+            <div>
+                <form>
+                    <input formControlName="id" type="text" placeholder="ID de imagen">
+                    <input formControlName="texto" type="text" placeholder="Texto de imagen">
+                    <div class="buttons">
+                        <button type="button" (click)="filtrar()">Filtrar</button>
+                        <button type="button" (click)="borrarFiltros()">Borrar filtros</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </form>
+    <table *ngIf="!filtered">
+        <tr>
+            <th>Imagen</th>
+            <th>Texto</th>
+        </tr>
+        <tr *ngFor="let item of pageSlice;let i=index">
+            <div class="container">
+                <div class="content">
+                    <a href={{item.photo}} target="_blank">
+                        <div class="content-overlay"></div>
+                        <img src={{item.photo}} alt="Error al cargar la imagen">
+                    </a>
+                </div>
+            </div>
+            <td>
+                <p>{{item.text}}</p>
+            </td>
+        </tr>
+        <th colspan="2"> <mat-paginator class="paginator" [length]="totalItems" [pageSize]="10" (page)="onChangePage($event, 'Initial')"
+            [pageSizeOptions]="[10, 25, 100, 500]" >
+        </mat-paginator></th>
+        
+    </table>
+
+    <table *ngIf="filtered">
+        <tr>
+            <th>Imagen</th>
+            <th>Texto</th>
+        </tr>
+        <tr *ngFor="let item of pageFilteredSlice;let i=index">
+            <div class="container">
+                <div class="content">
+                    <a href={{item.photo}} target="_blank">
+                        <div class="content-overlay"></div>
+                        <img src={{item.photo}} alt="Error al cargar la imagen">
+                    </a>
+                </div>
+            </div>
+            <td>
+                <p>{{item.text}}</p>
+            </td>
+        </tr>
+        <th colspan="2"> <mat-paginator class="paginator" [length]="totalFilteredItems" [pageSize]="10" (page)="onChangePage($event, 'Filtered')"
+            [pageSizeOptions]="[10, 25, 100, 500]" >
+        </mat-paginator></th>
+    </table>
+</div>
